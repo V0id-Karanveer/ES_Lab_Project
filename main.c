@@ -8,14 +8,14 @@ unsigned long int temp1=0, temp2=0 ;
 
 
 
-void lcd_init(void); // initialisation
-void wr_cn(void); //write command portwrite
-void clr_disp(void); //clear display command 0x01
+void lcd_init(); // initialisation
+void wr_cn(); //write command portwrite
+void clr_disp(); //clear display command 0x01
 void delay_lcd(unsigned int); //for loop delay 
-void lcd_com(void); // lcd write for command               
-void wr_dn(void); // port_write for data
-void lcd_data(void); // lcd write for data
-void clear_ports(void); //clr rs , en , data
+void lcd_com(); // lcd write for command               
+void wr_dn(); // port_write for data
+void lcd_data(); // lcd write for data
+void clear_ports(); //clr rs , en , data
 void lcd_puts(char *);// call lcd_data fn while writing
 
 
@@ -43,49 +43,38 @@ void lcd_init()
     LPC_GPIO0->FIODIR |= EN_CTRL;    
 
     clear_ports();
-    delay_lcd(3200);
+
 
 
 
     temp2 = (0x30);
     wr_cn();     
-    delay_lcd(30000);
 
     temp2 = (0x30);
     wr_cn();
-    delay_lcd(30000);    
 
     temp2 = (0x30);
     wr_cn();
-    delay_lcd(30000);
 
 
 
     temp2 = (0x20);
     wr_cn();
-    delay_lcd(30000);
 
-
-
-    temp1 = 0x28; 
+		temp1 = 0x28; 
     lcd_com();
-    delay_lcd(30000);
 
     temp1 = 0x0c;    
     lcd_com();
-    delay_lcd(800);
 
     temp1 = 0x06;
     lcd_com();
-    delay_lcd(800);
 
     temp1 = 0x01;
     lcd_com();
-    delay_lcd(10000);
 
     temp1 = 0x80;
     lcd_com();
-    delay_lcd(800);
     return;
 }
 
@@ -94,7 +83,6 @@ void lcd_init()
 void lcd_com(void)
 {
     temp2 = temp1 & 0xf0;
-    temp2 = temp2 ; 
     wr_cn();
     temp2 = temp1 & 0x0f; 
     temp2 = temp2 << 4; 
@@ -123,7 +111,6 @@ void wr_cn(void)                       
 void lcd_data(void)
 {             
     temp2 = temp1 & 0xf0;
-    temp2 = temp2 ;
     wr_dn();
     temp2= temp1 & 0x0f;    
     temp2= temp2 << 4;
@@ -163,7 +150,6 @@ void clr_disp(void)
 {
     temp1 = 0x01;
     lcd_com();
-    delay_lcd(10000);
     return;
 }
 void clear_ports(void)
